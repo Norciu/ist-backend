@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.idea/
+
+#Exclue from ./src/config
+src/config/.env
+src/config/.env.prod
+src/config/.env.dev
+src/config/environments.ts
+src/config/environments.prod.ts
+
+
+
+package-lock.json
