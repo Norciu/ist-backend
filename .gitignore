@@ -1,12 +1,11 @@
 node_modules/
 dist/
 .idea/
+src/tests/
 
 #Exclue from ./src/config
-src/config/.env
-src/config/.env.prod
-src/config/.env.dev
 src/config/environments.ts
+src/config/environments.dev.ts
 src/config/environments.prod.ts
 
 

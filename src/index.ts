@@ -1,10 +1,13 @@
 import { bootstrap } from "fastify-decorators";
 import { resolve } from "path";
 import Fastify, { FastifyInstance } from "fastify";
-// import {istPg} from "./config";
+import { istPg } from "./config";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import fastifyCsrf from "fastify-csrf";
 import fastifyCookie from "fastify-cookie";
+import fastifyJWTt from "fastify-jwt";
+import fastifyCors from "fastify-cors";
+import { importModels } from "./models";
 
 export const fastify: FastifyInstance<
   Server,
@@ -27,4 +30,17 @@ fastify.register(fastifyCsrf, {
   },
 });
 
-fastify.listen(3000);
+fastify.register(fastifyJWTt, {
+  secret: "6GkNKuED5pxZFj4K",
+  cookie: { cookieName: "_jwt" },
+});
+
+fastify.register(fastifyCors, {
+  origin: ["http://localhost:4200"]
+})
+
+importModels();
+
+istPg.sync().then(async (x) => {
+  await fastify.listen({ port: 3000 });
+});

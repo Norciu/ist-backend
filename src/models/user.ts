@@ -1,7 +1,7 @@
 import { istPg } from "../config";
 import { Model, DataTypes } from "sequelize";
 
-export class UserModel extends Model {
+export class User extends Model {
   id!: number;
   username!: string;
   password!: string;
@@ -13,7 +13,7 @@ export class UserModel extends Model {
   disabled!: boolean;
 }
 
-UserModel.init(
+User.init(
   {
     id: {
       type: DataTypes.INTEGER,

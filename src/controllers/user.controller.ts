@@ -1,4 +1,4 @@
-import { Controller, GET, POST } from "fastify-decorators";
+import { Controller, POST } from "fastify-decorators";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UserService } from "../services/";
 
@@ -10,8 +10,11 @@ export default class UserController {
       schema: {
         body: {
           type: "object",
-          username: { type: "string" },
-          password: { type: "string" },
+          required: ["username", "password"],
+          properties: {
+            username: { type: "string" },
+            password: { type: "string" },
+          },
         },
       },
     },
@@ -19,19 +22,16 @@ export default class UserController {
   async login(
     request: FastifyRequest<{ Body: { username: string; password: string } }>,
     reply: FastifyReply
-  ) {
+  ): Promise<{ _csrf: string; _jwt: string } | { "401": "Unauthorized" }> {
     const userService = new UserService(
       request.body.username,
       request.body.password
     );
-    const enabledUser = userService.isWorkingUser();
+    const enabledUser = await userService.isWorkingUser();
     if (enabledUser) {
+      const tokens = await userService.setAuthenticated(reply, request.body);
+      return reply.code(200).send(tokens);
     }
-  }
-
-  @GET({ url: "/csrf" })
-  async csrf(request: FastifyRequest, reply: FastifyReply) {
-    const token = await reply.generateCsrf();
-    return { token };
+    return reply.code(401).send("Unauthorized");
   }
 }

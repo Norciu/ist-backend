@@ -1,11 +1,13 @@
 import { Service } from "fastify-decorators";
-import { compare } from "bcrypt";
-import { UserModel } from "../models";
+import { compare, hash } from "bcrypt";
+import { User } from "../models";
+import { FastifyReply } from "fastify";
 
 export interface AddNewUser {
   username: string;
   firstName: string;
   lastName: string;
+  plainPassword?: string;
   phoneNo?: string | null;
   email?: string | null;
 }
@@ -19,10 +21,12 @@ export class UserService {
     this.plainPassword = password;
   }
 
-  public async addNew(opts: AddNewUser): Promise<UserModel> {
-    return await UserModel.create({
+  public async addNew(opts: AddNewUser): Promise<User> {
+    const hashedPass = await this.hashPass(opts.plainPassword)
+    return await User.create({
       username: opts.username,
       firstName: opts.firstName,
+      password: hashedPass,
       lastName: opts.lastName,
       phoneNo: opts.phoneNo,
       email: opts.email,
@@ -31,20 +35,31 @@ export class UserService {
 
   public async isWorkingUser(): Promise<boolean> {
     const credentials = await this.getFromDatabase();
+    console.log(credentials)
     if (credentials && !credentials.disabled) {
       return await compare(this.plainPassword, credentials.password);
     }
     return false;
   }
 
-  // private async hashPass(): Promise<string> {
-  //   return await hash(this.plainPassword, 10);
-  // }
+  private async hashPass(plainPassword?: string): Promise<string> {
+    const pass = plainPassword || this.plainPassword;
+    return await hash(pass, 10);
+  }
 
-  private async getFromDatabase(): Promise<UserModel | null> {
-    return await UserModel.findOne({
+  private async getFromDatabase(): Promise<User | null> {
+    return await User.findOne({
       where: { username: this.username },
       attributes: ["username", "password"],
     });
+  }
+
+  public async setAuthenticated(
+    reply: FastifyReply,
+    requestBody: { username: string; password: string }
+  ): Promise<{ _csrf: string; _jwt: string }> {
+    const _csrf = await reply.generateCsrf();
+    const _jwt = await reply.jwtSign({ requestBody });
+    return { _csrf, _jwt };
   }
 }
