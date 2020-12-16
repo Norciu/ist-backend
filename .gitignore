@@ -2,6 +2,8 @@ node_modules/
 dist/
 .idea/
 src/tests/
+tmp/
+temp/
 
 #Exclue from ./src/config
 src/config/environments.ts
@@ -9,5 +11,5 @@ src/config/environments.dev.ts
 src/config/environments.prod.ts
 
 
-
+ormconfig.json
 package-lock.json

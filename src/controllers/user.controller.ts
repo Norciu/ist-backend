@@ -1,4 +1,5 @@
-import { Controller, POST } from "fastify-decorators";
+import { Controller, GET, POST } from "fastify-decorators";
+import { fastify } from "../fastify";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UserService } from "../services/";
 
@@ -33,5 +34,15 @@ export default class UserController {
       return reply.code(200).send(tokens);
     }
     return reply.code(401).send("Unauthorized");
+  }
+
+  @GET({
+    url: "/is-logged",
+    options: {
+      onRequest: fastify.auth([fastify.csrfProtection, fastify.verifyJWT]),
+    },
+  })
+  async isLogged(request: FastifyRequest, reply: FastifyReply) {
+    return reply.code(200).send({isLogged: true});
   }
 }

@@ -6,11 +6,15 @@
   "scripts": {
     "test": "jest",
     "start": "node -r source-map-support/register .",
+    "start:prebuild": "npm run build:prod && npm start",
     "start:dev": "npm run env:dev && nodemon src/index.ts",
     "env:info": "echo \"//Keep this file untouched! If you want edit env, edit environments.dev.ts or environments.prod.ts instead!\n//Pozostaw ten plik wolny od edycji! Jeśli chcesz edytować zmienne, zrób to w pliku environments.dev.ts lub environments.prod.ts\n\" > src/config/environments.ts",
     "env:prod": "npm run env:info && cat src/config/environments.prod.ts >> src/config/environments.ts",
     "env:dev": "npm run env:info && cat src/config/environments.dev.ts >> src/config/environments.ts",
-    "build": "rm -rf dist && npm run env:prod && tsc"
+    "ng:prod": "cd ../ist-angular && ng b --prod --output-path=../ist-backend/dist/views",
+    "build":  "rm -rf dist && npm run env:prod && tsc",
+    "build:prod": "rm -rf dist && npm run ng:prod && npm run env:prod && tsc",
+    "lint": "eslint src/ > eslint.todo"
   },
   "nodemonConfig": {
     "restartable": "rs",
@@ -36,6 +40,7 @@
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/jest": "^26.0.17",
+    "@types/level-js": "^4.0.1",
     "@types/node": "^14.14.10",
     "@types/yargs": "^15.0.11",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
@@ -52,13 +57,20 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "class-validator": "^0.12.2",
     "fastify": "^3.9.1",
+    "fastify-auth": "^1.0.1",
     "fastify-cookie": "^4.1.1",
     "fastify-cors": "^5.0.0",
     "fastify-csrf": "^2.0.0",
+    "fastify-helmet": "^5.0.3",
     "fastify-jwt": "^2.1.3",
+    "fastify-static": "^3.3.0",
+    "level-js": "^5.0.2",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.3.5",
+    "typeorm": "^0.2.29"
   }
 }

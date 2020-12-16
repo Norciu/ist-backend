@@ -1,0 +1,36 @@
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/config/typeorm.ts
+  4:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+  7:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/user.controller.ts
+  39:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/entity/City.ts
+  29:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  32:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Location.ts
+  35:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  38:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  43:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  48:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/entity/LocationOwner.ts
+  43:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Street.ts
+  34:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  39:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Technology.ts
+  21:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/fastify.ts
+  59:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/index.ts
+  5:32  warning  'val' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 15 problems (0 errors, 15 warnings)
+

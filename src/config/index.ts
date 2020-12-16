@@ -1,2 +1,2 @@
-export * from "./sequelize"
+export * from "./typeorm"
 export * from "./environments";
