@@ -1,6 +1,6 @@
-import { Controller, PUT } from "fastify-decorators";
+import { Controller, GET, PUT } from "fastify-decorators";
 import { fastify } from "../fastify";
-import { authHeaders } from "./schemas";
+import { authHeader } from "./schemas";
 import { CityService } from "../services";
 import { FastifyReply, FastifyRequest } from "fastify";
 
@@ -9,9 +9,9 @@ export default class CityController {
   constructor(private cityService: CityService) {}
 
   @PUT("/insert", {
-    onRequest: fastify.auth([fastify.csrfProtection, fastify.verifyJWT]),
+    onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
-      headers: authHeaders,
+      headers: authHeader,
       body: {
         require: ["cityName", "simc"],
         properties: {
@@ -25,7 +25,23 @@ export default class CityController {
     request: FastifyRequest<{ Body: { cityName: string; simc: string } }>,
     reply: FastifyReply
   ) {
-    const result = await this.cityService.insertToDatabase(request.body.cityName, request.body.simc);
-    return reply.code(200).send(result)
+    const result = await this.cityService.insertToDatabase(
+      request.body.cityName,
+      request.body.simc
+    );
+    return !result
+      ? reply.code(204).send({ status: "CityExist" })
+      : reply.code(201).send({ status: "Added" });
+  }
+
+  @GET("/get-all", {
+    onRequest: fastify.auth([fastify.verifyJWT]),
+    schema: {
+      headers: authHeader,
+    },
+  })
+  async getAllCities(request: FastifyRequest, reply: FastifyReply) {
+    const cities = await this.cityService.getAllCitiesFromDatabase();
+    return reply.code(200).send(cities);
   }
 }

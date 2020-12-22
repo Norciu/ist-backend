@@ -6,13 +6,13 @@ import Fastify, {
   FastifyRequest,
 } from "fastify";
 import { IncomingMessage, Server, ServerResponse } from "http";
-import fastifyCsrf from "fastify-csrf";
 import fastifyCookie from "fastify-cookie";
 import fastifyJWTt from "fastify-jwt";
 import fastifyCors from "fastify-cors";
 import fastifyAuth, { FastifyAuthFunction } from "fastify-auth";
 import fastifyHelmet from "fastify-helmet";
 import { UserService } from "./services";
+import {environments as env} from "./config";
 
 export const fastify: FastifyInstance<
   Server,
@@ -21,13 +21,14 @@ export const fastify: FastifyInstance<
 > = Fastify({ logger: true });
 
 fastify.register(fastifyCookie, {
-  secret: "8ewHKAqytP9RejK8",
+  secret: env.secrets.cookie,
 });
 
-fastify.register(fastifyCsrf, {cookieOpts: {signed: true, path:'/'}, cookieKey: "_csrf"});
-
 fastify.register(fastifyJWTt, {
-  secret: "6GkNKuED5pxZFj4K",
+  secret: env.secrets.jwt,
+  cookie: {
+    cookieName: "_jwt"
+  },
 });
 
 fastify.register(fastifyCors, {
@@ -52,17 +53,18 @@ fastify
       done: (error?: Error) => void
     ) => {
       const jwt = fastify.jwt;
-      const jwtHeader = request.headers.authorization;
-      if (!jwtHeader) {
-         return done(new Error("Brak tokena JWT lub CSRF!"));
+      const jwtHeader = request.raw.headers.authorization;
+      const jwtCookie = request.cookies._jwt
+      if (!jwtHeader || !jwtCookie || (jwtHeader !== jwtCookie)) {
+        return done(new Error("Brak tokena JWT lub jest on niezgodny!"));
       }
       jwt.verify(jwtHeader, (err?: unknown, decoded?: any) => {
         if (err || !decoded.username || !decoded.password) {
           return done(new Error("Token jest nieprawidłowy!"));
         }
 
-        const userService = new UserService(decoded.username, decoded.password);
-        userService.isWorkingUser().then((val) => {
+        const userService = new UserService();
+        userService.isWorkingUser(decoded.username, decoded.password).then((val) => {
           return val
             ? done()
             : done(new Error("Podany token nie pasuje do użytkownika!"));

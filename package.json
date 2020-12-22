@@ -12,7 +12,7 @@
     "env:prod": "npm run env:info && cat src/config/environments.prod.ts >> src/config/environments.ts",
     "env:dev": "npm run env:info && cat src/config/environments.dev.ts >> src/config/environments.ts",
     "ng:prod": "cd ../ist-angular && ng b --prod --output-path=../ist-backend/dist/views",
-    "build":  "rm -rf dist && npm run env:prod && tsc",
+    "build": "rm -rf dist && npm run env:prod && tsc",
     "build:prod": "rm -rf dist && npm run ng:prod && npm run env:prod && tsc",
     "lint": "eslint src/ > eslint.todo"
   },
@@ -62,7 +62,6 @@
     "fastify-auth": "^1.0.1",
     "fastify-cookie": "^4.1.1",
     "fastify-cors": "^5.0.0",
-    "fastify-csrf": "^2.0.0",
     "fastify-helmet": "^5.0.3",
     "fastify-jwt": "^2.1.3",
     "fastify-static": "^3.3.0",

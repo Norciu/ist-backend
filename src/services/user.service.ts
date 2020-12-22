@@ -5,10 +5,10 @@ import { FastifyReply } from "fastify";
 import { getConnection, Repository } from "typeorm";
 
 export interface AddNewUser {
-  username?: string;
+  username: string;
   firstName: string;
   lastName: string;
-  plainPassword?: string;
+  plainPassword: string;
   phoneNo?: string;
   email?: string;
   verificationToken?: string;
@@ -16,58 +16,62 @@ export interface AddNewUser {
 
 @Service()
 export class UserService {
-  private readonly username: string;
-  private readonly plainPassword: string;
-
   private readonly userRepository: Repository<User> = getConnection().getRepository(
     User
   );
-  constructor(username: string, password: string) {
-    this.username = username;
-    this.plainPassword = password;
-  }
+  constructor() {}
 
   public async addNew(opts: AddNewUser): Promise<User> {
-    const hashedPass = await this.hashPass(
-      opts.plainPassword || this.plainPassword
-    );
+    const hashedPass = await this.hashPass(opts.plainPassword);
     const user = new User();
     user.firstName = opts.firstName;
     user.lastName = opts.lastName;
     user.email = opts.email || user.email;
     user.password = hashedPass;
     user.phoneNo = opts.phoneNo || user.phoneNo;
-    user.username = opts.username || this.username;
+    user.username = opts.username;
     user.verificationToken = opts.verificationToken || user.verificationToken;
     return this.userRepository.save(user);
   }
 
-  public async isWorkingUser(): Promise<boolean> {
-    const credentials = await this.getFromDatabase();
+  public async isWorkingUser(username: string, plainPassword: string): Promise<boolean> {
+    const credentials = await this.getFromDatabase(username);
     if (credentials && !credentials.disabled) {
-      return await compare(this.plainPassword, credentials.password);
+      return await compare(plainPassword, credentials.password);
     }
     return false;
   }
 
-  private async hashPass(plainPassword?: string): Promise<string> {
-    const pass = plainPassword || this.plainPassword;
+  private async hashPass(plainPassword: string): Promise<string> {
+    const pass = plainPassword;
     return await hash(pass, 10);
   }
 
-  public async getFromDatabase(username?: string): Promise<User | undefined> {
+  public async getFromDatabase(username: string): Promise<User | undefined> {
     return this.userRepository.findOne({
-      where: { username: username || this.username },
+      where: { username: username },
       select: ["username", "password"],
     });
+  }
+
+  public setCookies(reply: FastifyReply, opts: {jwt: string, username: string}): FastifyReply {
+    reply.setCookie("_jwt", opts.jwt, {
+      domain: "localhost",
+      path: "/",
+      sameSite: true,
+    }).setCookie("_username", opts.username, {
+      domain: "localhost",
+      path: "/",
+      sameSite: true,
+    })
+    return reply;
   }
 
   public async setAuthenticated(
     reply: FastifyReply,
     requestBody: { username: string; password: string }
-  ): Promise<{ _csrf: string; _jwt: string }> {
-    const _csrf = await reply.generateCsrf();
+  ): Promise<{ _jwt: string }> {
     const _jwt = await reply.jwtSign(requestBody);
-    return { _csrf, _jwt };
+    return { _jwt };
   }
 }

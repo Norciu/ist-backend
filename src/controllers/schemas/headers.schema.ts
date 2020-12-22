@@ -1,8 +1,7 @@
-export const authHeaders =  {
+export const authHeader =  {
   type: "object",
   properties: {
-    "csrf-token": {type: 'string'},
     authorization: {type: 'string'},
   },
-  required: ["csrf-token", "jwt-token"]
+  required: [ "authorization"]
 }

@@ -10,4 +10,8 @@ export interface Environments {
     password: string;
     dialect: Dialect
   };
+  secrets: {
+    cookie: string,
+    jwt: string,
+  }
 }
