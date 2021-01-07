@@ -5,16 +5,33 @@
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/city.controller.ts
   11:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+  41:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/location.controller.ts
-  7:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+   6:10  warning  'Location' is defined but never used  @typescript-eslint/no-unused-vars
+  17:3   warning  Missing return type on function       @typescript-eslint/explicit-module-boundary-types
+  74:3   warning  Missing return type on function       @typescript-eslint/explicit-module-boundary-types
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/street.controller.ts
+   1:27  warning  'POST' is defined but never used             @typescript-eslint/no-unused-vars
+   4:23  warning  'UserService' is defined but never used      @typescript-eslint/no-unused-vars
+  15:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
+  38:11  warning  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  46:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
+  57:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
+  68:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
+
+/Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/technology.controller.ts
+  13:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
+  33:11  warning  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  37:3   warning  Missing return type on function              @typescript-eslint/explicit-module-boundary-types
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/controllers/user.controller.ts
   43:3  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/entity/City.ts
-  29:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
-  32:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  35:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  38:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Location.ts
   35:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
@@ -23,17 +40,18 @@
   48:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/entity/LocationOwner.ts
-  43:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+   1:9   warning  'Check' is defined but never used  @typescript-eslint/no-unused-vars
+  61:14  warning  'type' is defined but never used   @typescript-eslint/no-unused-vars
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Street.ts
   34:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
   39:15  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/entity/Technology.ts
-  21:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+  22:14  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/fastify.ts
-  60:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
 /Volumes/SSD/Sync/GitHub/ist-backend/src/index.ts
   5:32  warning  'val' is defined but never used  @typescript-eslint/no-unused-vars
@@ -41,8 +59,14 @@
 /Volumes/SSD/Sync/GitHub/ist-backend/src/services/city.service.ts
   10:17  error  Unexpected empty constructor  @typescript-eslint/no-empty-function
 
+/Volumes/SSD/Sync/GitHub/ist-backend/src/services/locationOwner.service.ts
+  12:17  error  Unexpected empty constructor  @typescript-eslint/no-empty-function
+
 /Volumes/SSD/Sync/GitHub/ist-backend/src/services/user.service.ts
   22:17  error  Unexpected empty constructor  @typescript-eslint/no-empty-function
 
-✖ 19 problems (2 errors, 17 warnings)
+/Volumes/SSD/Sync/GitHub/ist-backend/src/tests/street.spec.ts
+  11:6  error  Parsing error: ',' expected
+
+✖ 35 problems (4 errors, 31 warnings)
 

@@ -14,6 +14,12 @@ export class City {
   cityName!: string;
 
   @Column({
+    name: "postal_code",
+    length: 6,
+  })
+  postalCode!: string;
+
+  @Column({
     nullable: false,
     length: 7,
     unique: true

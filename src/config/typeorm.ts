@@ -1,8 +1,9 @@
 import {createConnection, EntityTarget, getConnection} from "typeorm";
+import {ormconfig} from "./ormconfig";
 
 export const connection = {
   async create() {
-    await createConnection();
+    await createConnection(ormconfig);
   },
   async close() {
     await getConnection().close();

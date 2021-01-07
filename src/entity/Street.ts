@@ -32,7 +32,7 @@ export class Street {
   updatedAt!: number;
 
   @ManyToOne((type) => City, (city) => city.streets, {
-    nullable: false
+    nullable: false,
   })
   city!: City;
 

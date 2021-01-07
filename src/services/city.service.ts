@@ -9,13 +9,14 @@ export class CityService {
   );
   constructor() {}
 
-  public async insertToDatabase(city: string, simc: string): Promise<City | undefined> {
+  public async insertToDatabase(city: string, postalCode: string, simc: string): Promise<City | undefined> {
     const existInDatabase: boolean = await this._existInDatabase(city, simc);
     if (existInDatabase) {
       return undefined;
     }
     const cityEntity = new City();
     cityEntity.cityName = city;
+    cityEntity.postalCode = postalCode;
     cityEntity.simc = simc;
     return await this.cityRepository.save(cityEntity);
   }
@@ -25,10 +26,9 @@ export class CityService {
     return result instanceof City;
   }
 
-  public async findCityId(citySimc: string): Promise< City | undefined> {
+  public async findCity(citySimc: string): Promise< City | undefined> {
     const res = await this.cityRepository.findOne({
       where: { simc: citySimc },
-      select: ["id"],
     });
     return res
   }

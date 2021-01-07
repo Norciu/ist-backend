@@ -9,7 +9,10 @@ temp/
 src/config/environments.ts
 src/config/environments.dev.ts
 src/config/environments.prod.ts
+src/config/ormconfig.ts
+src/config/ormconfig.ts
 
-
-ormconfig.json
+ormconfig.json.bak
+ormconfig.json.bak
+ormconfig.json.bak
 package-lock.json

@@ -1,23 +1,41 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Check, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Location} from "./Location";
 import {IsEmail, Matches} from "class-validator";
 
 @Entity()
+// @Check(`client_type = 1 AND "first_name" IS NOT NULL AND "last_name" IS NOT NULL AND "company_name" IS NULL
+// OR client_type = 2 AND "company_name" IS NOT NULL AND "first_name" IS NOT NULL AND "last_name" IS NOT NULL`)
 export class LocationOwner {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({
+    name: "client_type",
+    type: "smallint",
+    default: null
+  })
+  clientType!: number;
+
+  @Column({
     name: "first_name",
-    length: 50
+    length: 50,
+    default: null
   })
   firstName!: string;
 
   @Column({
     name: "last_name",
-    length: 50
+    length: 50,
+    default: null
   })
   lastName!: string;
+
+  @Column({
+    name: "company_name",
+    length: 100,
+    default: null
+  })
+  companyName!: string;
 
   @Column({
     name: "phone_no",

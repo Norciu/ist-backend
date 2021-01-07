@@ -64,4 +64,24 @@ export default class StreetController {
     const streets = await this.streetService.getAvailableStreets();
     return reply.code(200).send(streets);
   }
+
+  @GET("/search", {
+    onRequest: fastify.auth([fastify.verifyJWT]),
+    schema: {
+      headers: authHeader,
+      querystring: {
+        required: ["simc"],
+        properties: {
+          simc: { type: "string" },
+        },
+      },
+    },
+  })
+  async searchStreets(
+    request: FastifyRequest<{ Querystring: { simc: string } }>,
+    reply: FastifyReply
+  ) {
+    const streets = await this.streetService.getStreets(request.query.simc);
+    return reply.code(200).send(streets);
+  }
 }

@@ -13,20 +13,24 @@ export default class CityController {
     schema: {
       headers: authHeader,
       body: {
-        require: ["cityName", "simc"],
+        require: ["cityName", "postalCode", "simc"],
         properties: {
           cityName: { type: "string" },
+          postalCode: { type: "string" },
           simc: { type: "string" },
         },
       },
     },
   })
   async insertNewCity(
-    request: FastifyRequest<{ Body: { cityName: string; simc: string } }>,
+    request: FastifyRequest<{
+      Body: { cityName: string; postalCode: string; simc: string };
+    }>,
     reply: FastifyReply
   ) {
     const result = await this.cityService.insertToDatabase(
       request.body.cityName,
+      request.body.postalCode,
       request.body.simc
     );
     return !result

@@ -7,10 +7,11 @@ export class Technology {
   id!: number;
 
   @Column({
+    name: "technology_name",
     nullable: false,
     unique: true,
   })
-  technology_name!: string;
+  technologyName!: string;
 
   @CreateDateColumn({name: "created_at", type: "timestamp"})
   createdAt!: number;
