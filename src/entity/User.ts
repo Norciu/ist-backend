@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
-import { Matches, IsEmail } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Matches, IsEmail } from 'class-validator';
+import { Comment } from './Comment';
 
 @Entity()
 export class User {
@@ -14,14 +15,14 @@ export class User {
   username!: string;
 
   @Column({
-    name: "first_name",
+    name: 'first_name',
     nullable: false,
     length: 50,
   })
   firstName!: string;
 
   @Column({
-    name: "last_name",
+    name: 'last_name',
     nullable: false,
     length: 50,
   })
@@ -33,7 +34,7 @@ export class User {
   password!: string;
 
   @Column({
-    name: "phone_no",
+    name: 'phone_no',
     length: 15,
     default: null,
   })
@@ -50,7 +51,7 @@ export class User {
   email!: string;
 
   @Column({
-    name: "verification_token",
+    name: 'verification_token',
     default: null,
   })
   verificationToken!: string;
@@ -60,9 +61,12 @@ export class User {
   })
   disabled!: boolean;
 
-  @CreateDateColumn({name: "created_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt!: number;
 
-  @CreateDateColumn({name: "updated_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt!: number;
+
+  @OneToMany(() => Comment, comment => comment.user)
+  comment!: Comment[];
 }

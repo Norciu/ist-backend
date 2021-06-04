@@ -1,8 +1,7 @@
-import { Service } from "fastify-decorators";
-import { compare, hash } from "bcrypt";
-import { User } from "../entity";
-import { FastifyReply } from "fastify";
-import { getConnection, Repository } from "typeorm";
+import { Service } from 'fastify-decorators';
+import { compareSync, hashSync } from 'bcrypt';
+import { User } from '../entity';
+import { getConnection, Repository } from 'typeorm';
 
 export interface AddNewUser {
   username: string;
@@ -19,7 +18,6 @@ export class UserService {
   private readonly userRepository: Repository<User> = getConnection().getRepository(
     User
   );
-  constructor() {}
 
   public async addNew(opts: AddNewUser): Promise<User> {
     const hashedPass = await this.hashPass(opts.plainPassword);
@@ -34,44 +32,16 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  public async isWorkingUser(username: string, plainPassword: string): Promise<boolean> {
-    const credentials = await this.getFromDatabase(username);
-    if (credentials && !credentials.disabled) {
-      return await compare(plainPassword, credentials.password);
-    }
-    return false;
-  }
-
-  private async hashPass(plainPassword: string): Promise<string> {
+  private hashPass(plainPassword: string): string {
     const pass = plainPassword;
-    return await hash(pass, 10);
+    return hashSync(pass, 10);
   }
 
-  public async getFromDatabase(username: string): Promise<User | undefined> {
-    return this.userRepository.findOne({
-      where: { username: username },
-      select: ["username", "password"],
-    });
+  comparePass(plain: string, hashed: string): boolean {
+    return compareSync(plain, hashed);
   }
 
-  public setCookies(reply: FastifyReply, opts: {jwt: string, username: string}): FastifyReply {
-    reply.setCookie("_jwt", opts.jwt, {
-      domain: "localhost",
-      path: "/",
-      sameSite: true,
-    }).setCookie("_username", opts.username, {
-      domain: "localhost",
-      path: "/",
-      sameSite: true,
-    })
-    return reply;
-  }
-
-  public async setAuthenticated(
-    reply: FastifyReply,
-    requestBody: { username: string; password: string }
-  ): Promise<{ _jwt: string }> {
-    const _jwt = await reply.jwtSign(requestBody);
-    return { _jwt };
+  public getUserFromDatabase(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { username: username } });
   }
 }

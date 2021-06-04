@@ -1,23 +1,23 @@
-import { Controller, GET, PUT } from "fastify-decorators";
-import { fastify } from "../fastify";
-import { authHeader } from "./schemas";
-import { CityService } from "../services";
-import { FastifyReply, FastifyRequest } from "fastify";
+import { Controller, GET, PUT } from 'fastify-decorators';
+import { fastify } from '../fastify';
+import { authHeader } from './schemas';
+import { CityService } from '../services';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
-@Controller({ route: "/api/city" })
+@Controller({ route: '/api/city' })
 export default class CityController {
   constructor(private cityService: CityService) {}
 
-  @PUT("/insert", {
+  @PUT('/insert', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,
       body: {
-        require: ["cityName", "postalCode", "simc"],
+        require: ['cityName', 'postalCode', 'simc'],
         properties: {
-          cityName: { type: "string" },
-          postalCode: { type: "string" },
-          simc: { type: "string" },
+          cityName: { type: 'string' },
+          postalCode: { type: 'string' },
+          simc: { type: 'string' },
         },
       },
     },
@@ -34,11 +34,11 @@ export default class CityController {
       request.body.simc
     );
     return !result
-      ? reply.code(204).send({ status: "CityExist" })
-      : reply.code(201).send({ status: "Added" });
+      ? reply.code(204).send({ status: 'CityExist' })
+      : reply.code(201).send({ status: 'Added' });
   }
 
-  @GET("/get-all", {
+  @GET('/get-all', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,

@@ -1,10 +1,10 @@
-import { Service } from "fastify-decorators";
-import {createQueryBuilder, getConnection, Repository} from "typeorm";
-import { Location, LocationOwner } from "../entity";
-import { LocationAddress } from "../interfaces";
-import { CityService } from "./city.service";
-import { StreetService } from "./street.service";
-import { TechnologyService } from "./technology.service";
+import { Service } from 'fastify-decorators';
+import { createQueryBuilder, getConnection, Repository } from 'typeorm';
+import { Location, LocationOwner } from '../entity';
+import { LocationAddress } from '../interfaces';
+import { CityService } from './city.service';
+import { StreetService } from './street.service';
+import { TechnologyService } from './technology.service';
 
 @Service()
 export class LocationService {
@@ -36,12 +36,12 @@ export class LocationService {
     return await this.locationRepository.save(loc);
   }
 
-  public async getAll(): Promise<unknown[]> {
-    return await createQueryBuilder("location", "location")
-        .leftJoinAndSelect("location.location_owner", "locationOwner")
-        .leftJoinAndSelect("location.street", "street")
-        .leftJoinAndSelect("street.city", "city")
-        .leftJoinAndSelect("location.availableTechnology", "technology")
-        .getMany();
+  public getAll(): Promise<unknown[]> {
+    return this.locationRepository.createQueryBuilder('location')
+      .leftJoinAndSelect('location.location_owner', 'locationOwner')
+      .leftJoinAndSelect('location.street', 'street')
+      .leftJoinAndSelect('street.city', 'city')
+      .leftJoinAndSelect('location.availableTechnology', 'technology')
+      .getMany();
   }
 }

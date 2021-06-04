@@ -1,1 +1,1 @@
-export * from "./headers.schema"
+export * from './headers.schema';

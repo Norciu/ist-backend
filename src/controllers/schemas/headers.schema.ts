@@ -1,7 +1,7 @@
 export const authHeader =  {
-  type: "object",
+  type: 'object',
   properties: {
-    authorization: {type: 'string'},
+    authorization: { type: 'string' },
   },
-  required: [ "authorization"]
-}
+  required: ['authorization']
+};

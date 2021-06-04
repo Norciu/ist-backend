@@ -1,25 +1,25 @@
-import { Controller, GET, PUT } from "fastify-decorators";
-import { fastify } from "../fastify";
-import { FastifyReply, FastifyRequest } from "fastify";
-import { authHeader } from "./schemas";
-import {TechnologyService} from "../services/technology.service";
+import { Controller, GET, PUT } from 'fastify-decorators';
+import { fastify } from '../fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { authHeader } from './schemas';
+import { TechnologyService } from '../services/technology.service';
 
-@Controller({ route: "/api/technology" })
+@Controller({ route: '/api/technology' })
 export default class TechnologyController {
 
   constructor(private technologyService: TechnologyService) {
   }
 
   @PUT({
-    url: "/insert",
+    url: '/insert',
     options: {
       onRequest: fastify.auth([fastify.verifyJWT]),
       schema: {
         headers: authHeader,
         body: {
-          required: ["technologyName"],
+          required: ['technologyName'],
           properties: {
-            technologyName: { type: "string" },
+            technologyName: { type: 'string' },
           },
         },
       },
@@ -31,7 +31,7 @@ export default class TechnologyController {
   ) {
     const techName = request.body.technologyName;
     const result = await this.technologyService.insertToDatabase(techName);
-    return reply.code(200).send({status: "Added"})
+    return reply.code(200).send({ status: 'Added' });
   }
 
   @GET({

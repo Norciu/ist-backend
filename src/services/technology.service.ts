@@ -1,6 +1,6 @@
-import { Service } from "fastify-decorators";
-import { getConnection, Repository } from "typeorm";
-import { Technology } from "../entity";
+import { Service } from 'fastify-decorators';
+import { getConnection, Repository } from 'typeorm';
+import { Technology } from '../entity';
 
 @Service()
 export class TechnologyService {
@@ -15,11 +15,11 @@ export class TechnologyService {
   }
 
   public async getAvailable(): Promise<Technology[]> {
-    return await this.technologyRepository.find({select: ["technologyName", "createdAt", "updatedAt"]});
+    return await this.technologyRepository.find({ select: ['technologyName', 'createdAt', 'updatedAt'] });
   }
 
   public async findTechnology(techName: string): Promise<Technology | undefined> {
-    return await this.technologyRepository.findOne({where: {technologyName: techName}})
+    return await this.technologyRepository.findOne({ where: { technologyName: techName } });
   }
 }
 

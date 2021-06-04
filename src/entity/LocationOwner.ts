@@ -1,6 +1,6 @@
-import {Check, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Location} from "./Location";
-import {IsEmail, Matches} from "class-validator";
+import { Check, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Location } from './Location';
+import { IsEmail, Matches } from 'class-validator';
 
 @Entity()
 // @Check(`client_type = 1 AND "first_name" IS NOT NULL AND "last_name" IS NOT NULL AND "company_name" IS NULL
@@ -10,35 +10,35 @@ export class LocationOwner {
   id!: number;
 
   @Column({
-    name: "client_type",
-    type: "smallint",
+    name: 'client_type',
+    type: 'smallint',
     default: null
   })
   clientType!: number;
 
   @Column({
-    name: "first_name",
+    name: 'first_name',
     length: 50,
     default: null
   })
   firstName!: string;
 
   @Column({
-    name: "last_name",
+    name: 'last_name',
     length: 50,
     default: null
   })
   lastName!: string;
 
   @Column({
-    name: "company_name",
+    name: 'company_name',
     length: 100,
     default: null
   })
   companyName!: string;
 
   @Column({
-    name: "phone_no",
+    name: 'phone_no',
     length: 20,
     default: null
   })
@@ -52,10 +52,10 @@ export class LocationOwner {
   @IsEmail()
   email!: string;
 
-  @CreateDateColumn({name: "created_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt!: number;
 
-  @CreateDateColumn({name: "updated_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt!: number;
 
   @OneToMany(type => Location, location => location.location_owner)

@@ -1,28 +1,28 @@
-import { Controller, GET, POST, PUT } from "fastify-decorators";
-import { fastify } from "../fastify";
-import { FastifyReply, FastifyRequest } from "fastify";
-import { CityService, UserService } from "../services/";
-import { authHeader } from "./schemas";
-import { StreetService } from "../services/street.service";
+import { Controller, GET, POST, PUT } from 'fastify-decorators';
+import { fastify } from '../fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { CityService, UserService } from '../services/';
+import { authHeader } from './schemas';
+import { StreetService } from '../services/street.service';
 
-@Controller({ route: "/api/street" })
+@Controller({ route: '/api/street' })
 export default class StreetController {
   constructor(
     private streetService: StreetService,
     private cityService: CityService
   ) {}
 
-  @PUT("/insert", {
+  @PUT('/insert', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,
       body: {
-        type: "object",
-        required: ["citySimc", "streetName", "ulic"],
+        type: 'object',
+        required: ['citySimc', 'streetName', 'ulic'],
         properties: {
-          citySimc: { type: "string" },
-          streetName: { type: "string" },
-          ulic: { type: "string" },
+          citySimc: { type: 'string' },
+          streetName: { type: 'string' },
+          ulic: { type: 'string' },
         },
       },
     },
@@ -43,7 +43,7 @@ export default class StreetController {
     return reply.code(200).send({ added: true });
   }
 
-  @GET("/available-cities", {
+  @GET('/available-cities', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,
@@ -54,7 +54,7 @@ export default class StreetController {
     return reply.code(200).send(cities);
   }
 
-  @GET("/get-all", {
+  @GET('/get-all', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,
@@ -65,14 +65,14 @@ export default class StreetController {
     return reply.code(200).send(streets);
   }
 
-  @GET("/search", {
+  @GET('/search', {
     onRequest: fastify.auth([fastify.verifyJWT]),
     schema: {
       headers: authHeader,
       querystring: {
-        required: ["simc"],
+        required: ['simc'],
         properties: {
-          simc: { type: "string" },
+          simc: { type: 'string' },
         },
       },
     },

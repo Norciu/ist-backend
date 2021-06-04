@@ -1,8 +1,9 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import { Technology } from "./Technology";
-import { Street } from "./Street";
-import { City } from "./City";
-import {LocationOwner} from "./LocationOwner";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Technology } from './Technology';
+import { Street } from './Street';
+import { City } from './City';
+import { LocationOwner } from './LocationOwner';
+import { Comment } from './Comment';
 
 @Entity()
 export class Location {
@@ -10,26 +11,26 @@ export class Location {
   id!: number;
 
   @Column({
-    name: "flat_no",
+    name: 'flat_no',
     length: 20,
     nullable: true
   })
   flatNo!: string;
 
-  @Column({name: 'home_no', length: 4 })
+  @Column({ name: 'home_no', length: 4 })
   homeNo!: string;
 
   @Column({
-    name: "plot_no",
+    name: 'plot_no',
     default: null,
     length: 40
   })
   plotNo!: string;
 
-  @CreateDateColumn({name: "created_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt!: number;
 
-  @CreateDateColumn({name: "updated_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt!: number;
 
   @ManyToOne(type => LocationOwner, locationOwner => locationOwner.locationOwner)
@@ -49,4 +50,7 @@ export class Location {
     nullable: false,
   })
   availableTechnology!: Technology;
+
+  @OneToMany(() => Comment, ({ location }) => location)
+  comment!: Comment[];
 }

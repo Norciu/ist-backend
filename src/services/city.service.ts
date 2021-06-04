@@ -1,6 +1,6 @@
-import { Service } from "fastify-decorators";
-import { City } from "../entity";
-import { getConnection, Repository } from "typeorm";
+import { Service } from 'fastify-decorators';
+import { City } from '../entity';
+import { getConnection, Repository } from 'typeorm';
 
 @Service()
 export class CityService {
@@ -18,26 +18,23 @@ export class CityService {
     cityEntity.cityName = city;
     cityEntity.postalCode = postalCode;
     cityEntity.simc = simc;
-    return await this.cityRepository.save(cityEntity);
+    return this.cityRepository.save(cityEntity);
   }
 
   private async _existInDatabase(cityName: string, simc: string): Promise<boolean> {
-    const result: City | undefined = await this.cityRepository.findOne({where: {cityName, simc}})
+    const result: City | undefined = await this.cityRepository.findOne({ where: { cityName, simc } });
     return result instanceof City;
   }
 
-  public async findCity(citySimc: string): Promise< City | undefined> {
-    const res = await this.cityRepository.findOne({
-      where: { simc: citySimc },
-    });
-    return res
+  public findCity(citySimc: string): Promise< City | undefined> {
+    return this.cityRepository.findOne({ where: { simc: citySimc } });
   }
 
-  public async getAllCitiesFromDatabase(): Promise<City[]> {
-    return await this.cityRepository.find();
+  public getAllCitiesFromDatabase(): Promise<City[]> {
+    return this.cityRepository.find();
   }
 
-  public async getAllCitiesForStreets(): Promise<City[]> {
-    return await this.cityRepository.find({select: ["id", "cityName", "simc"]});
+  public getAllCitiesForStreets(): Promise<City[]> {
+    return this.cityRepository.find({ select: ['id', 'cityName', 'simc'] });
   }
 }

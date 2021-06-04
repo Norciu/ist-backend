@@ -4,9 +4,9 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { City } from "./City";
-import { Location } from "./Location";
+} from 'typeorm';
+import { City } from './City';
+import { Location } from './Location';
 
 @Entity()
 export class Street {
@@ -14,7 +14,7 @@ export class Street {
   id!: number;
 
   @Column({
-    name: "street_name",
+    name: 'street_name',
     length: 50,
   })
   streetName!: string;
@@ -25,17 +25,17 @@ export class Street {
   })
   ulic!: string;
 
-  @CreateDateColumn({name: "created_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt!: number;
 
-  @CreateDateColumn({name: "updated_at", type: "timestamp"})
+  @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt!: number;
 
-  @ManyToOne((type) => City, (city) => city.streets, {
+  @ManyToOne(() => City, (city) => city.streets, {
     nullable: false,
   })
   city!: City;
 
-  @OneToMany((type) => Location, (location) => location.city)
+  @OneToMany(() => Location, (location) => location.city)
   locations!: Location[];
 }

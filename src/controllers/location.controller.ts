@@ -1,13 +1,13 @@
-import { Controller, GET, PUT } from "fastify-decorators";
-import { FastifyReply, FastifyRequest } from "fastify";
-import { fastify } from "../fastify";
-import { authHeader } from "./schemas";
-import { Location as LocationInterface } from "../interfaces";
-import { Location} from "../entity";
-import { LocationOwnerService } from "../services/locationOwner.service";
-import { LocationService } from "../services/location.service";
+import { Controller, GET, PUT } from 'fastify-decorators';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { fastify } from '../fastify';
+import { authHeader } from './schemas';
+import { Location as LocationInterface } from '../interfaces';
+import { Location } from '../entity';
+import { LocationOwnerService } from '../services/locationOwner.service';
+import { LocationService } from '../services/location.service';
 
-@Controller({ route: "/api/location" })
+@Controller({ route: '/api/location' })
 export default class LocationController {
   constructor(
     private locationOwnerService: LocationOwnerService,
@@ -15,37 +15,37 @@ export default class LocationController {
   ) {}
 
   @PUT({
-    url: "/insert",
+    url: '/insert',
     options: {
       onRequest: fastify.auth([fastify.verifyJWT]),
       schema: {
         headers: authHeader,
         body: {
-          type: "object",
-          required: ["address", "technology"],
+          type: 'object',
+          required: ['address', 'technology'],
           properties: {
             clientInfo: {
-              type: ["object"],
+              type: ['object'],
               properties: {
-                clientType: { type: "string" },
-                firstName: { type: "string" },
-                lastName: { type: "string" },
-                phoneNo: { type: "string" },
-                email: { type: "string" },
+                clientType: { type: 'string' },
+                firstName: { type: 'string' },
+                lastName: { type: 'string' },
+                phoneNo: { type: 'string' },
+                email: { type: 'string' },
               },
             },
             address: {
-              type: "object",
-              required: ["city", "street", "homeNo"],
+              type: 'object',
+              required: ['city', 'street', 'homeNo'],
               properties: {
-                city: { type: "string" },
-                street: { type: "string" },
-                flatNo: { type: "string" },
-                homeNo: { type: "string" },
-                plotNo: { type: "string" },
+                city: { type: 'string' },
+                street: { type: 'string' },
+                flatNo: { type: 'string' },
+                homeNo: { type: 'string' },
+                plotNo: { type: 'string' },
               },
             },
-            technology: { type: "string" },
+            technology: { type: 'string' },
           },
         },
       },
@@ -63,22 +63,21 @@ export default class LocationController {
       : undefined;
     ownerDbResult
       ? await this.locationService.insertToDatabase({
-          address,
-          technology,
-          locOwner: ownerDbResult,
-        })
+        address,
+        technology,
+        locOwner: ownerDbResult,
+      })
       : await this.locationService.insertToDatabase({ address, technology });
-    return reply.code(200).send({ status: "Added" });
+    return reply.code(200).send({ status: 'Added' });
   }
 
-  @GET({url: '/get-all', options: {
+  @GET({ url: '/get-all', options: {
     onRequest: fastify.auth([fastify.verifyJWT]),
-      schema: {
+    schema: {
       headers: authHeader
-      }
-    }})
-  async getAllLocations(request: FastifyRequest, reply: FastifyReply) {
-    const locations = await this.locationService.getAll();
-    return reply.code(200).send(locations);
+    }
+  } })
+  getAllLocations(request: FastifyRequest, reply: FastifyReply) {
+    return this.locationService.getAll();
   }
 }
